@@ -142,7 +142,6 @@ val words = listOf(
     listOf("защемит", "защемИт", R.string.verbs),
     listOf("защемить", "защемИть", R.string.verbs),
     listOf("звала", "звалА", R.string.verbs),
-    listOf("звать", "звАть", R.string.verbs),
     listOf("звонит", "звонИт", R.string.verbs),
     listOf("звонить", "звонИть", R.string.verbs),
     listOf("кашлянуть", "кАшлянуть", R.string.verbs),

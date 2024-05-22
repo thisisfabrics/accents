@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
@@ -55,7 +58,7 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
             var modeListIsOpened by rememberSaveable { mutableStateOf(false) }
             Column(
                 modifier = Modifier
-                    .width(dimensionResource(id = R.dimen.mode_width))
+                    .defaultMinSize(minWidth = dimensionResource(id = R.dimen.mode_width))
                     .background(
                         color = MaterialTheme.colorScheme.surface,
                         shape = MaterialTheme.shapes.extraSmall
@@ -72,6 +75,7 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
                             stiffness = Spring.StiffnessMedium
                         )
                     )
+                    .verticalScroll(rememberScrollState())
             ) {
                 Row {
                     Text(
@@ -80,7 +84,7 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding))
                     )
                 }
-                if (modeListIsOpened)
+                if (modeListIsOpened) {
                     for ((i, elem) in uiState.modes.slice(1..uiState.modes.lastIndex)
                         .withIndex())
                         Row(
@@ -99,13 +103,13 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
                                 color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.padding(
                                     bottom = dimensionResource(id = R.dimen.padding),
-                                    start = dimensionResource(
-                                        id = R.dimen.padding
-                                    ),
+                                    start = dimensionResource(id = R.dimen.padding),
                                     end = dimensionResource(id = R.dimen.padding)
                                 )
                             )
                         }
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.menu)))
+                }
             }
             IconButton(
                 onClick = { viewModel.restart() },
@@ -122,7 +126,12 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(dimensionResource(id = R.dimen.padding) * 2)
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding) * 2,
+                    end = dimensionResource(id = R.dimen.padding) * 2,
+                    top = dimensionResource(id = R.dimen.menu) * 1.5f,
+                    bottom = dimensionResource(id = R.dimen.menu) * 1.5f
+                )
                 .verticalScroll(rememberScrollState())
                 .zIndex(-1f)
         ) {
@@ -159,6 +168,11 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
                         )
                     }
                     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                }
+                IconButton (
+                    onClick = { viewModel.previous() }
+                ) {
+                    Icon(Icons.Outlined.ArrowBack, contentDescription = null)
                 }
             } else {
                 Text(

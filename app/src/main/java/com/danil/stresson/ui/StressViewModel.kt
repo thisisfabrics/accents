@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 class StressViewModel(val stressRepository: StressRepository) : ViewModel() {
     val uiState = MutableStateFlow(StressState())
     private var words = listOf<Pair<String, String>>()
-    val vowels = "аеиоуыэюяaeiouy"
+    private val vowels = "аеиоуыэюяaeiouy"
 
     init {
         restart()
@@ -105,6 +105,28 @@ class StressViewModel(val stressRepository: StressRepository) : ViewModel() {
             )
         }
         buildCurrentVariants()
+    }
+
+    fun previous() {
+        if (uiState.value.currentWordIndex - 1 != -1) {
+            if (uiState.value.incorrectWords.contains(words[uiState.value.currentWordIndex - 1].second)) {
+                val index = uiState.value.incorrectWords.indexOf(words[uiState.value.currentWordIndex - 1].second)
+                var newIncorrectWords = uiState.value.incorrectWords.slice(0 until index)
+                if (index != uiState.value.incorrectWords.lastIndex)
+                    newIncorrectWords = newIncorrectWords +
+                            uiState.value.incorrectWords.slice(index + 1..uiState.value.incorrectWords.lastIndex)
+                uiState.update { it.copy(incorrectWords = newIncorrectWords) }
+            }
+            val progress = (uiState.value.currentWordIndex - 1).toFloat() / words.lastIndex
+            uiState.update {
+                it.copy(
+                    currentWordIndex = uiState.value.currentWordIndex - 1,
+                    currentWord = words[uiState.value.currentWordIndex - 1].first,
+                    progress = progress
+                )
+            }
+            buildCurrentVariants()
+        }
     }
 
     companion object {
