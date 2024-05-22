@@ -172,7 +172,7 @@ fun Game(viewModel: StressViewModel, uiState: StressState, navController: NavHos
                 IconButton (
                     onClick = { viewModel.previous() }
                 ) {
-                    Icon(Icons.Outlined.ArrowBack, contentDescription = null)
+                    Icon(Icons.Outlined.ArrowBack, contentDescription = null, tint = MaterialTheme.colorScheme.onBackground)
                 }
             } else {
                 Text(
