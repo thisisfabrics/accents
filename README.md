@@ -11,4 +11,4 @@
 - [Jetpack Compose](https://developer.android.com/compose) `a native Android app`
 
 ## Platforms
-Android `An apk file`
+Android `an apk file`
